@@ -11,7 +11,7 @@ import { ProjectCategory } from '@/types/category';
 import { ProjectMember } from '@/types/projectMember';
 import { Transaction, TransactionDisplay, UpdateTransactionPayload } from '@/types/transaction';
 
-export const getProjectCategories = async (projectId: string): Promise<ProjectCategory[]> => {
+const getProjectCategories = async (projectId: string): Promise<ProjectCategory[]> => {
     try {
       const response = await api.get(`/api/project/categories/${projectId}`);
       return response.data;
@@ -21,7 +21,7 @@ export const getProjectCategories = async (projectId: string): Promise<ProjectCa
     }
   };
 
-  export const getProjectMembers = async (projectId: string): Promise<ProjectMember[]> => {
+const getProjectMembers = async (projectId: string): Promise<ProjectMember[]> => {
     try {
       const response = await api.get(`/api/project/${projectId}/members/`);
       return response.data;
@@ -31,7 +31,7 @@ export const getProjectCategories = async (projectId: string): Promise<ProjectCa
     }
   };
 
-  export const getProjectTransactions = async (projectId: string): Promise<Transaction[]> => {
+const getProjectTransactions = async (projectId: string): Promise<Transaction[]> => {
     try {
       const response = await api.get(`/api/funds/${projectId}`);
       return response.data;
@@ -41,7 +41,7 @@ export const getProjectCategories = async (projectId: string): Promise<ProjectCa
     }
   };
 
-  export const updateTransaction = async (
+const updateTransaction = async (
     transactionId: string, 
     data: UpdateTransactionPayload
   ): Promise<Transaction> => {
@@ -54,7 +54,7 @@ export const getProjectCategories = async (projectId: string): Promise<ProjectCa
     }
   };
   
-  export const deleteTransaction = async (transactionId: string): Promise<void> => {
+const deleteTransaction = async (transactionId: string): Promise<void> => {
     try {
       await api.delete(`/api/funds/delete/${transactionId}`);
     } catch (error) {
@@ -63,7 +63,7 @@ export const getProjectCategories = async (projectId: string): Promise<ProjectCa
     }
   };
 
-  export const getMemberTransactions = async (projectId: string, userId: string): Promise<Transaction[]> => {
+const getMemberTransactions = async (projectId: string, userId: string): Promise<Transaction[]> => {
     try {
       const response = await api.get(`/api/funds/${projectId}/${userId}`);
       return response.data;

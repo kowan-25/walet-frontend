@@ -10,7 +10,7 @@ import { useParams } from "next/navigation";
 import api from "@/lib/api";
 import { ProjectCategory } from "@/types/category";
 
-export const getProjectCategories = async (projectId: string): Promise<ProjectCategory[]> => {
+const getProjectCategories = async (projectId: string): Promise<ProjectCategory[]> => {
   try {
     const response = await api.get(`/api/project/categories/${projectId}`);
     return response.data;
