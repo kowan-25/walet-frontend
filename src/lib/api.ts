@@ -19,7 +19,8 @@ api.interceptors.response.use(
     
     const originalRequest = error.config;
 
-    if (originalRequest.url?.includes('/login') || originalRequest.url?.includes('/register')) {
+    if (originalRequest.url?.includes('/login') || originalRequest.url?.includes('/register')
+    || originalRequest.url?.includes('/verify')) {
       return
     }
 
