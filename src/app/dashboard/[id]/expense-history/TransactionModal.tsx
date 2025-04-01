@@ -6,19 +6,9 @@ import Input from "@/components/inputs/Input";
 import { IoClose } from "react-icons/io5";
 import { FaCheck } from "react-icons/fa6";
 import clsx from "clsx";
+import { getProjectCategories } from "@/lib/api/categories";
+import { ProjectCategory } from '@/lib/api/types';
 import { useParams } from "next/navigation";
-import api from "@/lib/api";
-import { ProjectCategory } from "@/types/category";
-
-const getProjectCategories = async (projectId: string): Promise<ProjectCategory[]> => {
-  try {
-    const response = await api.get(`/api/project/categories/${projectId}`);
-    return response.data;
-  } catch (error) {
-    console.error('Error fetching project categories:', error);
-    throw error;
-  }
-};
 
 interface TransactionModalProps {
   isOpen: boolean;

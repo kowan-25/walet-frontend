@@ -3,42 +3,11 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import BudgetDetailModal from './BudgetDetailModal';
+import { getProjectBudgets, deleteProjectBudget } from '@/lib/api/budgets';
 import NotificationModal from '@/components/modals/NotificationModal';
 import ConfirmationModal from '@/components/modals/ConfirmationModal';
 import { FaTrash, FaPencilAlt } from 'react-icons/fa';
-import api from '@/lib/api';
-import { ProjectMember } from '@/types/projectMember';
-import { ProjectBudget } from '@/types/projectBudget';
-
-const getProjectMembers = async (projectId: string): Promise<ProjectMember[]> => {
-    try {
-      const response = await api.get(`/api/project/${projectId}/members/`);
-      return response.data;
-    } catch (error) {
-      console.error('Error fetching project members:', error);
-      throw error;
-    }
-  };
-  
-const getProjectBudgets = async (projectId: string): Promise<ProjectBudget[]> => {
-    try {
-        const response = await api.get(`/api/project/budget-records/${projectId}`);
-        return response.data;
-    } catch (error) {
-        console.error('Error fetching project budgets:', error);
-        throw error;
-    }
-};
-
-const deleteProjectBudget = async (budgetId: string): Promise<any> => {
-    try {
-        const response = await api.delete(`/api/project/budget-record/delete/${budgetId}`);
-        return response.data;
-    } catch (error) {
-        console.error('Error deleting budget record:', error);
-        throw error;
-    }
-};
+import { getProjectMembers } from '@/lib/api/members';
 
 interface BudgetDisplay {
   id: string;

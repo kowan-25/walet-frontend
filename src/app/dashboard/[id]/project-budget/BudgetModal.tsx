@@ -7,18 +7,7 @@ import { IoClose } from "react-icons/io5";
 import { FaCheck } from "react-icons/fa6";
 import clsx from "clsx";
 import { useParams } from "next/navigation";
-import api from "@/lib/api";
-import { ProjectMember } from "@/types/projectMember";
-
-const getProjectMembers = async (projectId: string): Promise<ProjectMember[]> => {
-    try {
-      const response = await api.get(`/api/project/${projectId}/members/`);
-      return response.data;
-    } catch (error) {
-      console.error('Error fetching project members:', error);
-      throw error;
-    }
-  };
+import { getProjectMembers } from "@/lib/api/members";
 
 interface BudgetModalProps {
   isOpen: boolean;

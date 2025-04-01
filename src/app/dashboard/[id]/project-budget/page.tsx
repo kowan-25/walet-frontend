@@ -2,58 +2,14 @@
 
 import React, { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
-import BudgetList from "@/components/project-budget/BudgetList";
+import BudgetList from "./BudgetList";
 import Button from "@/components/buttons/Button";
 import { FaPlus } from "react-icons/fa";
-import BudgetModal, { BudgetFormData } from "@/components/project-budget/BudgetModal";
+import BudgetModal, { BudgetFormData } from "./BudgetModal";
+import { createProjectBudget, updateProjectBudget } from "@/lib/api/budgets";
 import NotificationModal from "@/components/modals/NotificationModal";
+import { sendFunds, takeFunds } from "@/lib/api/funds"; 
 import { useProjectRole } from "../layout";
-import api from "@/lib/api";
-import { CreateBudgetPayload, ProjectBudget, UpdateBudgetPayload } from "@/types/projectBudget";
-import { SendFundsPayload } from "@/types/fund";
-
-const createProjectBudget = async (data: CreateBudgetPayload): Promise<ProjectBudget> => {
-    try {
-        const response = await api.post('/api/project/budget-record/create', data);
-        return response.data;
-    } catch (error) {
-        console.error('Error creating budget record:', error);
-        throw error;
-    }
-};
-
-const updateProjectBudget = async (
-    budgetId: string,
-    data: UpdateBudgetPayload
-): Promise<any> => {
-    try {
-        const response = await api.put(`/api/project/budget-record/edit/${budgetId}`, data);
-        return response.data;
-    } catch (error) {
-        console.error('Error updating budget record:', error);
-        throw error;
-    }
-};
-
-const sendFunds = async (projectId: string, data: SendFundsPayload) => {
-    try {
-      const response = await api.post(`/api/funds/send-funds/${projectId}`, data);
-      return response.data;
-    } catch (error) {
-      console.error("Error sending funds:", error);
-      throw error;
-    }
-};
-  
-const takeFunds = async (projectId: string, data: SendFundsPayload) => {
-    try {
-      const response = await api.post(`/api/funds/take-funds/${projectId}`, data);
-      return response.data;
-    } catch (error) {
-      console.error("Error sending funds:", error);
-      throw error;
-    }
-};
 
 const ProjectBudgetPage = () => {
   const { isManager, isLoading: isLoadingRole } = useProjectRole();

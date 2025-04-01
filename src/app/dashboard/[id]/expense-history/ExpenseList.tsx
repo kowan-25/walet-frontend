@@ -6,72 +6,9 @@ import TransactionModal, { TransactionFormData } from './TransactionModal';
 import TransactionDetailModal from './TransactionDetailModal';
 import ConfirmationModal from '@/components/modals/ConfirmationModal';
 import NotificationModal from '@/components/modals/NotificationModal';
-import api from '@/lib/api';
-import { ProjectCategory } from '@/types/category';
-import { ProjectMember } from '@/types/projectMember';
-import { Transaction, TransactionDisplay, UpdateTransactionPayload } from '@/types/transaction';
-
-const getProjectCategories = async (projectId: string): Promise<ProjectCategory[]> => {
-    try {
-      const response = await api.get(`/api/project/categories/${projectId}`);
-      return response.data;
-    } catch (error) {
-      console.error('Error fetching project categories:', error);
-      throw error;
-    }
-  };
-
-const getProjectMembers = async (projectId: string): Promise<ProjectMember[]> => {
-    try {
-      const response = await api.get(`/api/project/${projectId}/members/`);
-      return response.data;
-    } catch (error) {
-      console.error('Error fetching project members:', error);
-      throw error;
-    }
-  };
-
-const getProjectTransactions = async (projectId: string): Promise<Transaction[]> => {
-    try {
-      const response = await api.get(`/api/funds/${projectId}`);
-      return response.data;
-    } catch (error) {
-      console.error('Error fetching project transactions:', error);
-      throw error;
-    }
-  };
-
-const updateTransaction = async (
-    transactionId: string, 
-    data: UpdateTransactionPayload
-  ): Promise<Transaction> => {
-    try {
-      const response = await api.put(`/api/funds/edit/${transactionId}`, data);
-      return response.data;
-    } catch (error) {
-      console.error('Error updating transaction:', error);
-      throw error;
-    }
-  };
-  
-const deleteTransaction = async (transactionId: string): Promise<void> => {
-    try {
-      await api.delete(`/api/funds/delete/${transactionId}`);
-    } catch (error) {
-      console.error('Error deleting transaction:', error);
-      throw error;
-    }
-  };
-
-const getMemberTransactions = async (projectId: string, userId: string): Promise<Transaction[]> => {
-    try {
-      const response = await api.get(`/api/funds/${projectId}/${userId}`);
-      return response.data;
-    } catch (error) {
-      console.error('Error fetching member transactions:', error);
-      throw error;
-    }
-  };
+import { getProjectTransactions, getMemberTransactions, deleteTransaction, updateTransaction } from '@/lib/api/transactions';
+import { Transaction, TransactionDisplay, ProjectCategory } from '@/lib/api/types';
+import { getProjectCategories } from '@/lib/api/categories';
 
 interface ExpenseListProps {
   projectId: string;
@@ -83,7 +20,6 @@ interface ExpenseListProps {
 const ExpenseList: React.FC<ExpenseListProps> = ({ projectId, isManager, userId, refreshTrigger = 0 }) => {
   const [expenses, setExpenses] = useState<TransactionDisplay[]>([]);
   const [selectedExpense, setSelectedExpense] = useState<TransactionDisplay | null>(null);
-  const [members, setMembers] = useState<ProjectMember[]>([]);
   const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -93,7 +29,12 @@ const ExpenseList: React.FC<ExpenseListProps> = ({ projectId, isManager, userId,
     isSuccess: true,
     message: '',
   });
-
+  const [categories, setCategories] = useState<ProjectCategory[]>([]);
+  const getCategoryName = (categoryId: string): string => {
+    const category = categories.find(cat => cat.id === categoryId);
+    return category ? category.name : categoryId;
+  };
+  
   useEffect(() => {
     const fetchCategories = async () => {
       try {
@@ -103,37 +44,14 @@ const ExpenseList: React.FC<ExpenseListProps> = ({ projectId, isManager, userId,
         console.error('Error fetching categories:', error);
       }
     };
-
+    
     fetchCategories();
   }, [projectId]);
-
-  useEffect(() => {
-    const fetchMembers = async () => {
-      if (isManager) {
-        try {
-          const data = await getProjectMembers(projectId);
-          setMembers(data);
-        } catch (error) {
-          console.error('Error fetching members:', error);
-        }
-      }
-    };
-    fetchMembers();
-  }, [projectId, isManager]);
-
-  const [categories, setCategories] = useState<ProjectCategory[]>([]);
-  const getCategoryName = (categoryId: string): string => {
-    const category = categories.find(cat => cat.id === categoryId);
-    return category ? category.name : categoryId;
-  };
-  const getUsername = (userId: string): string => {
-    const member = members.find(m => m.member === userId);
-    return member ? member.member_name : userId;
-  };
+  
 
   useEffect(() => {
     fetchTransactions();
-  }, [projectId, isManager, userId, categories, members, refreshTrigger]);
+  }, [projectId, isManager, userId, refreshTrigger]);
 
   const fetchTransactions = async () => {
     try {
@@ -150,8 +68,6 @@ const ExpenseList: React.FC<ExpenseListProps> = ({ projectId, isManager, userId,
         id: tx.id,
         amount: formatCurrency(tx.amount),
         category: tx.transaction_category,
-        categoryName: getCategoryName(tx.transaction_category),
-        username: isManager ? getUsername(tx.user) : undefined,
         description: tx.transaction_note || undefined,
         created_at: formatDate(tx.created_at)
       }));
@@ -259,7 +175,7 @@ const ExpenseList: React.FC<ExpenseListProps> = ({ projectId, isManager, userId,
           message: 'Transaksi berhasil diperbarui'
         });
 
-        fetchTransactions();
+        fetchTransactions(); 
         setIsEditModalOpen(false);
       } catch (error) {
         console.error('Error updating transaction:', error);
@@ -301,11 +217,6 @@ const ExpenseList: React.FC<ExpenseListProps> = ({ projectId, isManager, userId,
               <th className="px-6 py-4 text-left text-sm font-semibold uppercase tracking-wide">
                 Tanggal Dibuat
               </th>
-              {isManager &&
-                <th className="px-6 py-4 text-left text-sm font-semibold uppercase tracking-wide">
-                  Anggota
-                </th>
-              }
               {/* Tampilkan kolom Aksi hanya jika user adalah member (bukan manager) */}
               {isManager === false && (
                 <th className="px-6 py-4 text-right text-sm font-semibold uppercase tracking-wide">
@@ -330,11 +241,6 @@ const ExpenseList: React.FC<ExpenseListProps> = ({ projectId, isManager, userId,
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
                   {expense.created_at}
                 </td>
-                {isManager && (
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
-                    {expense.username}
-                  </td>
-                )}
                 {/* Tampilkan tombol aksi hanya jika user adalah member (bukan manager) */}
                 {isManager === false && (
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 text-right">
@@ -372,7 +278,7 @@ const ExpenseList: React.FC<ExpenseListProps> = ({ projectId, isManager, userId,
           onEdit={() => handleEdit(selectedExpense)}
           onDelete={() => handleDelete(selectedExpense)}
           transaction={selectedExpense}
-          showActions={isManager === false}
+          showActions={isManager === false} 
         />
       )}
 

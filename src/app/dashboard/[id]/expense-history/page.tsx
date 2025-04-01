@@ -2,25 +2,15 @@
 
 import React, { useState } from 'react';
 import { useParams } from 'next/navigation';
-import ExpenseList from '@/components/expense-history/ExpenseList';
+import ExpenseList from './ExpenseList';
 import Button from "@/components/buttons/Button";
 import { FaPlus } from "react-icons/fa";
-import TransactionModal, { TransactionFormData } from '@/components/expense-history/TransactionModal';
+import TransactionModal, { TransactionFormData } from './TransactionModal';
+import { createTransaction } from '@/lib/api/transactions';
 import NotificationModal from '@/components/modals/NotificationModal';
 import { useProjectRole } from '../layout';
 import useUser from '@/hooks/useUser';
-import { CreateTransactionPayload, Transaction } from '@/types/transaction';
-import api from '@/lib/api';
-
-const createTransaction = async (data: CreateTransactionPayload): Promise<Transaction> => {
-    try {
-      const response = await api.post('/api/funds/create', data);
-      return response.data;
-    } catch (error) {
-      console.error('Error creating transaction:', error);
-      throw error;
-    }
-  };
+import BudgetWidget from './BudgetWidget';
 
 const ExpenseHistoryPage = () => {
   const { isManager, isLoading: isLoadingRole } = useProjectRole();
@@ -36,6 +26,7 @@ const ExpenseHistoryPage = () => {
   const params = useParams();
   const projectId = params.id as string;
 
+ 
   const handleAddTransaction = async (data: TransactionFormData) => {
     try {
       setIsLoading(true);
@@ -88,6 +79,16 @@ const ExpenseHistoryPage = () => {
         </p>
       </div>
 
+      {!isManager && (
+        <div className="mt-8">
+          <BudgetWidget
+            projectId={projectId}
+            userId={userId}
+            refreshTrigger={refreshTrigger}
+          />
+        </div>
+      )}
+      
       <div className="mt-8">
         <ExpenseList
           projectId={projectId}
