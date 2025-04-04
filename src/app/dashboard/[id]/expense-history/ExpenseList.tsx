@@ -9,6 +9,8 @@ import NotificationModal from '@/components/modals/NotificationModal';
 import { getProjectTransactions, getMemberTransactions, deleteTransaction, updateTransaction } from '@/lib/api/transactions';
 import { Transaction, TransactionDisplay, ProjectCategory } from '@/lib/api/types';
 import { getProjectCategories } from '@/lib/api/categories';
+import { getProjectMembers } from "@/lib/api/members";
+import { ProjectMember } from "@/lib/api/types";
 
 interface ExpenseListProps {
   projectId: string;
@@ -20,6 +22,7 @@ interface ExpenseListProps {
 const ExpenseList: React.FC<ExpenseListProps> = ({ projectId, isManager, userId, refreshTrigger = 0 }) => {
   const [expenses, setExpenses] = useState<TransactionDisplay[]>([]);
   const [selectedExpense, setSelectedExpense] = useState<TransactionDisplay | null>(null);
+  const [members, setMembers] = useState<ProjectMember[]>([]);
   const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -29,12 +32,7 @@ const ExpenseList: React.FC<ExpenseListProps> = ({ projectId, isManager, userId,
     isSuccess: true,
     message: '',
   });
-  const [categories, setCategories] = useState<ProjectCategory[]>([]);
-  const getCategoryName = (categoryId: string): string => {
-    const category = categories.find(cat => cat.id === categoryId);
-    return category ? category.name : categoryId;
-  };
-  
+
   useEffect(() => {
     const fetchCategories = async () => {
       try {
@@ -44,14 +42,37 @@ const ExpenseList: React.FC<ExpenseListProps> = ({ projectId, isManager, userId,
         console.error('Error fetching categories:', error);
       }
     };
-    
+
     fetchCategories();
   }, [projectId]);
-  
+
+  useEffect(() => {
+    const fetchMembers = async () => {
+      if (isManager) {
+        try {
+          const data = await getProjectMembers(projectId);
+          setMembers(data);
+        } catch (error) {
+          console.error('Error fetching members:', error);
+        }
+      }
+    };
+    fetchMembers();
+  }, [projectId, isManager]);
+
+  const [categories, setCategories] = useState<ProjectCategory[]>([]);
+  const getCategoryName = (categoryId: string): string => {
+    const category = categories.find(cat => cat.id === categoryId);
+    return category ? category.name : categoryId;
+  };
+  const getUsername = (userId: string): string => {
+    const member = members.find(m => m.member === userId);
+    return member ? member.member_name : userId;
+  };
 
   useEffect(() => {
     fetchTransactions();
-  }, [projectId, isManager, userId, refreshTrigger]);
+  }, [projectId, isManager, userId, categories, members, refreshTrigger]);
 
   const fetchTransactions = async () => {
     try {
@@ -68,6 +89,8 @@ const ExpenseList: React.FC<ExpenseListProps> = ({ projectId, isManager, userId,
         id: tx.id,
         amount: formatCurrency(tx.amount),
         category: tx.transaction_category,
+        categoryName: getCategoryName(tx.transaction_category),
+        username: isManager ? getUsername(tx.user) : undefined,
         description: tx.transaction_note || undefined,
         created_at: formatDate(tx.created_at)
       }));
@@ -175,7 +198,7 @@ const ExpenseList: React.FC<ExpenseListProps> = ({ projectId, isManager, userId,
           message: 'Transaksi berhasil diperbarui'
         });
 
-        fetchTransactions(); 
+        fetchTransactions();
         setIsEditModalOpen(false);
       } catch (error) {
         console.error('Error updating transaction:', error);
@@ -217,6 +240,11 @@ const ExpenseList: React.FC<ExpenseListProps> = ({ projectId, isManager, userId,
               <th className="px-6 py-4 text-left text-sm font-semibold uppercase tracking-wide">
                 Tanggal Dibuat
               </th>
+              {isManager &&
+                <th className="px-6 py-4 text-left text-sm font-semibold uppercase tracking-wide">
+                  Anggota
+                </th>
+              }
               {/* Tampilkan kolom Aksi hanya jika user adalah member (bukan manager) */}
               {isManager === false && (
                 <th className="px-6 py-4 text-right text-sm font-semibold uppercase tracking-wide">
@@ -241,6 +269,11 @@ const ExpenseList: React.FC<ExpenseListProps> = ({ projectId, isManager, userId,
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
                   {expense.created_at}
                 </td>
+                {isManager && (
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+                    {expense.username}
+                  </td>
+                )}
                 {/* Tampilkan tombol aksi hanya jika user adalah member (bukan manager) */}
                 {isManager === false && (
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 text-right">
@@ -278,7 +311,7 @@ const ExpenseList: React.FC<ExpenseListProps> = ({ projectId, isManager, userId,
           onEdit={() => handleEdit(selectedExpense)}
           onDelete={() => handleDelete(selectedExpense)}
           transaction={selectedExpense}
-          showActions={isManager === false} 
+          showActions={isManager === false}
         />
       )}
 

@@ -58,8 +58,15 @@ const TransactionDetailModal: React.FC<TransactionDetailModalProps> = ({
 
           <div>
             <h3 className="text-sm text-gray-500 font-medium">Kategori</h3>
-            <p className="text-lg text-gray-800">{transaction.category}</p>
+            <p className="text-lg text-gray-800">{transaction.categoryName || transaction.category}</p>
           </div>
+
+          {transaction.username && (
+            <div>
+              <h3 className="text-sm text-gray-500 font-medium">Anggota</h3>
+              <p className="text-lg text-gray-800">{transaction.username}</p>
+            </div>
+          )}
 
           {transaction.description && (
             <div>

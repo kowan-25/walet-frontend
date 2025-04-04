@@ -13,6 +13,8 @@ export interface TransactionDisplay {
   id: string;
   amount: string;
   category: string;
+  categoryName: string;
+  username?: string;
   description?: string;
   created_at: string;
 }
