@@ -52,18 +52,18 @@ const Navbar = () => {
                 <FaChevronDown size={14} />
               </button>
               <div className="absolute right-0 mt-2 bg-white border border-gray-200 rounded-md shadow-md opacity-0 group-hover:opacity-100 invisible group-hover:visible transition-all z-10 w-[210px]">
-                <Button
+                <button
                   onClick={() => router.push('/invitations')}
                   className="flex flex-row gap-2 items-center justify-start block w-full text-left px-8 py-4 hover:bg-gray-100 text-sm text-gray-700 cursor-pointer rounded-t-md"
                 >
                   <MailPlus size={16}/> Lihat Undangan
-                </Button>
-                <Button
+                </button>
+                <button
                   onClick={handleLogout}
                   className="flex flex-row gap-2 items-center justify-start block w-full text-left text-red-500 px-8 py-4 hover:bg-gray-100 text-sm text-gray-700 cursor-pointer rounded-b-md"
                 >
                   <LogOut size={16}/>Logout
-                </Button>
+                </button>
               </div>
             </div>
           ) : (
