@@ -19,7 +19,7 @@ export default function HeroSection() {
           width={600}
           height={506.583}
           alt="Walet Logo"
-          className="w-[600px] h-[426px]"
+          className="w-[400px] h-[284px] xl:w-[600px] xl:h-[426px]"
         />
       </div>
       <div></div>
@@ -31,7 +31,7 @@ export default function HeroSection() {
               Welcome to <span className="text-accent-dirty-blue">Walet</span>
             </h2>
           </div>
-          <p className="text-xl mt-10 w-[682px] self-end text-right">
+          <p className="text-xl mt-10 w-1/2 self-end text-right">
             Walet adalah platform kolaboratif yang dirancang untuk memudahkan
             Anda dalam mengelola proyek dan keuangan secara efisien. Mulai
             proyek baru atau bergabung dengan proyek yang sudah ada, dan nikmati
