@@ -202,7 +202,7 @@ export default function page() {
 
         {!isManager && (
           <div className="flex justify-end mt-8">
-            <Button onClick={() => { router.push(`/dashboard/${id}/fund-requests/buat`); }} className="text-white font-medium rounded-[20px]">
+            <Button onClick={() => { router.push(`/dashboard/${id}/fund-requests/create`); }} className="text-white font-medium rounded-[20px]">
               <GrAdd />
               Ajukan Permintaan
             </Button>
