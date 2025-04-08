@@ -11,7 +11,7 @@ import { useRouter } from "next/navigation";
 import { HiOutlineWrenchScrewdriver } from "react-icons/hi2";
 
 interface ProjectFormProps {
-  mode: "create" | "edit";
+  mode?: "create" | "edit";
   projectId: string | null;
   initialData?: { name: string; description: string };
 }
@@ -104,7 +104,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
     setIsModalOpen(false);
     if (isSuccess) {
       router.push(
-        mode === "edit" && projectId ? `/project/${projectId}` : "/home"
+        mode === "edit" && projectId ? `/dashboard/${projectId}/project-overview` : "/home"
       );
     }
   };
