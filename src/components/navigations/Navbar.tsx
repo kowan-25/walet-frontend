@@ -68,20 +68,24 @@ const Navbar = () => {
             </div>
           ) : (
             <div className="flex gap-8">
-              <Button
-                size="small"
-                asChild
-                className="bg-accent-dirty-blue text-white !font-medium rounded-2xl w-[130px]"
-              >
-                <Link href={"/register"}>Sign Up</Link>
-              </Button>
-              <Button
-                size="small"
-                asChild
-                className="border-accent-dirty-blue border-2 bg-transparent text-accent-dirty-blue !font-medium rounded-2xl w-[130px]"
-              >
-                <Link href={"/login"}>Login</Link>
-              </Button>
+              <Link href={"/register"}>
+                <Button
+                  size="small"
+                  asChild
+                  className="bg-accent-dirty-blue text-white !font-medium rounded-2xl w-[130px]"
+                >
+                  Sign Up
+                </Button>
+              </Link>
+              <Link href={"/login"}>
+                <Button
+                  size="small"
+                  asChild
+                  className="border-accent-dirty-blue border-2 bg-transparent text-accent-dirty-blue !font-medium rounded-2xl w-[130px]"
+                >
+                  Login
+                </Button>
+              </Link>
             </div>
           )}
         </div>
