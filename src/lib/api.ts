@@ -46,7 +46,6 @@ api.interceptors.response.use(
       }
 
       if (isRefreshing) {
-        // tunggu hingga token baru tersedia
         return new Promise((resolve) => {
           addSubscriber((token: string) => {
             originalRequest.headers.Authorization = `Bearer ${token}`;
