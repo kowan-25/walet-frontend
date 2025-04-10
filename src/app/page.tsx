@@ -45,36 +45,36 @@ export default function Home() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 px-[90px] w-full">
         <TestimonialCard
           name="Muhammad Matthew 1992"
-          description="Walet transformed the way our team handles finances. Everything is now clear, trackable, and accountable. It's a game-changer for our operations."
+          description={'"Walet transformed the way our team handles finances. Everything is now clear, trackable, and accountable. It\'s a game-changer for our operations."'}
           imageSrc="/landing/met2.png"
         />
         <TestimonialCard
           name="Kucing Hutan"
-          description="Awalnya skeptis, tapi ternyata Walet ngebantu banget buat ngatur dana program. Tinggal klik, upload, beres. Mantap!"
+          description={'"Awalnya skeptis, tapi ternyata Walet ngebantu banget buat ngatur dana program. Tinggal klik, upload, beres. Mantap!"'}
           imageSrc="/landing/testi/kucinghutan.jpg"
         />
         <TestimonialCard
           name="Naplep"
-          description="Pake Walet tuh kayak punya bendahara pribadi di HP. Tinggal input, upload bukti, langsung bisa diajuin. Cuma sayangnya gak bisa diajak curhat."
+          description={'"Pake Walet tuh kayak punya bendahara pribadi di HP. Tinggal input, upload bukti, langsung bisa diajuin. Cuma sayangnya gak bisa diajak curhat."'}
           imageSrc="/landing/testi/naplep.png"
         />
         <TestimonialCard
           name="Yoshinoya"
-          description="As a coordinator, I appreciate how Walet ensures transparency and speed in financial reporting. Highly recommended for any organization."
+          description={'"As a coordinator, I appreciate how Walet ensures transparency and speed in financial reporting. Highly recommended for any organization."'}
           imageSrc="/landing/testi/nopalyoshi.png"
         />
         <TestimonialCard
           name="Pokpol"
-          description="Walet bikin urusan keuangan organisasi jadi gak ribet. UI-nya clean, UX-nya enak, dan proses approval-nya cepet. Cocok buat tim kampus!"
+          description={'"Walet bikin urusan keuangan organisasi jadi gak ribet. UI-nya clean, UX-nya enak, dan proses approval-nya cepet. Cocok buat tim kampus!"'}
           imageSrc="/landing/testi/pokpol.jpg"
         />
         <TestimonialCard
           name="Silly"
-          description="Gue dulu suka lupa udah laporin dana atau belum. Sekarang? Walet ngingetin terus, kayak mantan tapi versi berguna."
+          description={'"Gue dulu suka lupa udah laporin dana atau belum. Sekarang? Walet ngingetin terus, kayak mantan tapi versi berguna."'}
           imageSrc="/landing/testi/silly.png"
         />
       </div>
-
+      
       <footer className="mt-[200px] mb-4 text-sm text-muted text-center">
         <p className="text-gray-500">&copy; 2025 Walet. All rights reserved.</p>
       </footer>
