@@ -2,6 +2,7 @@ import Button from "@/components/buttons/Button";
 import Image from "next/image";
 import { Alice } from "next/font/google";
 import Link from "next/link";
+import TestimonialCard from "@/components/landing/TestiCard";
 
 const alice = Alice({
   subsets: ["latin"],
@@ -37,26 +38,44 @@ export default function Home() {
         </div>
       </div>
       
-      <div className="mt-[500px] flex items-center gap-12 px-[90px]">
-        <div className="w-[200px] h-[200px] rounded-full overflow-hidden border-4 border-accent-dirty-blue shadow-lg">
-          <Image
-            src="/landing/met2.png"
-            alt="Person"
-            width={200}
-            height={200}
-            className="object-cover w-full h-full"
-          />
-        </div>
+      <h2 className="text-4xl font-bold text-center mt-[600px] mb-20 text-accent-dirty-blue">
+        What People Are Saying About Walet
+      </h2>
 
-        <div className="max-w-xl">
-          <h3 className="text-3xl font-semibold mb-2 text-accent-dirty-blue">Muhammad Matthew 1992</h3>
-          <p className="text-gray-600 text-lg leading-relaxed">
-            UI Computer Science student and infrastructure architect of Walet. Passionate about tech innovation and financial systems.
-          </p>
-        </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 px-[90px] w-full">
+        <TestimonialCard
+          name="Muhammad Matthew 1992"
+          description="Walet transformed the way our team handles finances. Everything is now clear, trackable, and accountable. It's a game-changer for our operations."
+          imageSrc="/landing/met2.png"
+        />
+        <TestimonialCard
+          name="Kucing Hutan"
+          description="Awalnya skeptis, tapi ternyata Walet ngebantu banget buat ngatur dana program. Tinggal klik, upload, beres. Mantap!"
+          imageSrc="/landing/testi/kucinghutan.jpg"
+        />
+        <TestimonialCard
+          name="Naplep"
+          description="Pake Walet tuh kayak punya bendahara pribadi di HP. Tinggal input, upload bukti, langsung bisa diajuin. Cuma sayangnya gak bisa diajak curhat."
+          imageSrc="/landing/testi/naplep.png"
+        />
+        <TestimonialCard
+          name="Yoshinoya"
+          description="As a coordinator, I appreciate how Walet ensures transparency and speed in financial reporting. Highly recommended for any organization."
+          imageSrc="/landing/testi/nopalyoshi.png"
+        />
+        <TestimonialCard
+          name="Pokpol"
+          description="Walet bikin urusan keuangan organisasi jadi gak ribet. UI-nya clean, UX-nya enak, dan proses approval-nya cepet. Cocok buat tim kampus!"
+          imageSrc="/landing/testi/pokpol.jpg"
+        />
+        <TestimonialCard
+          name="Silly"
+          description="Gue dulu suka lupa udah laporin dana atau belum. Sekarang? Walet ngingetin terus, kayak mantan tapi versi berguna."
+          imageSrc="/landing/testi/silly.png"
+        />
       </div>
 
-      <footer className="mt-[500px] text-sm text-muted text-center">
+      <footer className="mt-[200px] mb-4 text-sm text-muted text-center">
         <p className="text-gray-500">&copy; 2025 Walet. All rights reserved.</p>
       </footer>
     </main>
