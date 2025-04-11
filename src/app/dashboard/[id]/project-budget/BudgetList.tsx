@@ -20,7 +20,7 @@ interface BudgetDisplay {
 }
 
 interface BudgetListProps {
-  onEdit?: (budget: BudgetDisplay) => void;
+  onEdit?: (budget: BudgetDisplay, totalBudget: any) => void;
   refreshTrigger?: number;
 }
 
@@ -88,7 +88,7 @@ const BudgetList: React.FC<BudgetListProps> = ({ onEdit, refreshTrigger }) => {
     e.stopPropagation();
     if (onEdit && budget.is_editable) {
       setIsDetailModalOpen(false);
-      onEdit(budget);
+      onEdit(budget, totalBudget);
     } else if (!budget.is_editable) {
       setNotification({
         isOpen: true,

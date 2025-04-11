@@ -15,6 +15,9 @@ interface BudgetModalProps {
   onSave: (data: BudgetFormData) => void;
   isLoading?: boolean;
   initialData?: BudgetFormData;
+  isEdit: boolean;
+  budget: any;
+  totalBudget: any;
 }
 
 export interface BudgetFormData {
@@ -37,6 +40,9 @@ const BudgetModal: React.FC<BudgetModalProps> = ({
   onSave,
   isLoading = false,
   initialData,
+  isEdit,
+  budget,
+  totalBudget,
 }) => {
   const params = useParams();
   const projectId = params.id as string;
@@ -71,7 +77,7 @@ const BudgetModal: React.FC<BudgetModalProps> = ({
           is_income: initialData.is_income || false,
           project_id: projectId,
           member_id: initialData.member_id || "",
-          transaction_type: initialData.transaction_type || "expense",
+          transaction_type: initialData.transaction_type || "income",
         });
       } else {
         setFormData({
@@ -130,7 +136,7 @@ const BudgetModal: React.FC<BudgetModalProps> = ({
     }
   };
 
-  const validateForm = (): boolean => {
+  const validateForm = (selisih: any, totalBudget: any): boolean => {
     const newErrors: Partial<Record<keyof BudgetFormData, string>> = {};
 
     if (!formData.amount || formData.amount <= 0) {
@@ -143,14 +149,23 @@ const BudgetModal: React.FC<BudgetModalProps> = ({
         "Anggota harus dipilih untuk pengeluaran atau take fund";
     }
 
+    if (Number.isNaN(selisih)) {
+      selisih = 0
+    }
+
+    if (selisih > totalBudget) {
+      newErrors.amount = "Tidak bisa mengedit lebih besar daripada sisa budget"
+    }
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    let selisih = budget.amount - formData.amount
 
-    if (validateForm()) {
+    if (validateForm(selisih, totalBudget)) {
       onSave(formData);
     }
   };
@@ -194,32 +209,36 @@ const BudgetModal: React.FC<BudgetModalProps> = ({
                 >
                   Pemasukan
                 </button>
-                <button
-                  type="button"
-                  onClick={() => handleTabChange("expense")}
-                  className={clsx(
-                    "px-6 py-2.5 text-sm font-medium border transition-colors",
-                    formData.transaction_type === "expense"
-                      ? "bg-primary-600 text-white border-primary-600"
-                      : "bg-white text-gray-700 border-gray-300 hover:bg-gray-50"
-                  )}
-                  disabled={isLoading}
-                >
-                  Kirim Dana ke Member
-                </button>
-                <button
-                  type="button"
-                  onClick={() => handleTabChange("take_fund")}
-                  className={clsx(
-                    "px-6 py-2.5 text-sm font-medium border rounded-r-md transition-colors",
-                    formData.transaction_type === "take_fund"
-                      ? "bg-primary-600 text-white border-primary-600"
-                      : "bg-white text-gray-700 border-gray-300 hover:bg-gray-50"
-                  )}
-                  disabled={isLoading}
-                >
-                  Ambil Dana dari Member
-                </button>
+                { isEdit && (
+                  <>
+                    <button
+                      type="button"
+                      onClick={() => handleTabChange("expense")}
+                      className={clsx(
+                        "px-6 py-2.5 text-sm font-medium border transition-colors",
+                        formData.transaction_type === "expense"
+                          ? "bg-primary-600 text-white border-primary-600"
+                          : "bg-white text-gray-700 border-gray-300 hover:bg-gray-50"
+                      )}
+                      disabled={isLoading}
+                    >
+                      Kirim Dana ke Member
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => handleTabChange("take_fund")}
+                      className={clsx(
+                        "px-6 py-2.5 text-sm font-medium border rounded-r-md transition-colors",
+                        formData.transaction_type === "take_fund"
+                          ? "bg-primary-600 text-white border-primary-600"
+                          : "bg-white text-gray-700 border-gray-300 hover:bg-gray-50"
+                      )}
+                      disabled={isLoading}
+                    >
+                      Ambil Dana dari Member
+                    </button>
+                  </>
+                )}
               </div>
             </div>
 

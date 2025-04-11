@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
-import BudgetList from "./BudgetList";
 import Button from "@/components/buttons/Button";
 import { FaPlus } from "react-icons/fa";
 import BudgetModal, { BudgetFormData } from "./BudgetModal";
@@ -10,6 +9,7 @@ import { createProjectBudget, updateProjectBudget } from "@/lib/api/budgets";
 import NotificationModal from "@/components/modals/NotificationModal";
 import { sendFunds, takeFunds } from "@/lib/api/funds"; 
 import { useProjectRole } from "../layout";
+import BudgetList from "./BudgetList";
 
 const ProjectBudgetPage = () => {
   const { isManager, isLoading: isLoadingRole } = useProjectRole();
@@ -19,12 +19,15 @@ const ProjectBudgetPage = () => {
   const [refreshTrigger, setRefreshTrigger] = useState(0);
   const [showAddModal, setShowAddModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [isEditBudget, setIsEditBudget] = useState(true)
+  const [totalBudget, setTotalBudget] = useState(0)
   const [notification, setNotification] = useState({
     isOpen: false,
     isSuccess: true,
     message: "",
   });
   const [editingBudget, setEditingBudget] = useState<any>(null);
+  const [budget, setBudget] = useState<any>({})
 
   useEffect(() => {
     if (!isLoadingRole && isManager === false) {
@@ -130,9 +133,12 @@ const ProjectBudgetPage = () => {
     }
   };
 
-  const handleEditBudget = (budget: any) => {
+  const handleEditBudget = (budget: any, totalBudget: any) => {
+    setIsEditBudget(false)
     setEditingBudget(budget);
     setShowAddModal(true);
+    setBudget(budget)
+    setTotalBudget(totalBudget)
   };
 
   const handleCloseModal = () => {
@@ -166,6 +172,7 @@ const ProjectBudgetPage = () => {
           variant="primary"
           size="small"
           onClick={() => {
+            setIsEditBudget(true) 
             setEditingBudget(null);
             setShowAddModal(true);
           }}
@@ -183,6 +190,9 @@ const ProjectBudgetPage = () => {
         onSave={handleAddBudget}
         isLoading={isLoading}
         initialData={editingBudget}
+        isEdit={isEditBudget}
+        budget={budget}
+        totalBudget={totalBudget}
       />
 
       <NotificationModal
