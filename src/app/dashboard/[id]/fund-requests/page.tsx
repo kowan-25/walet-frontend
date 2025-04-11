@@ -46,7 +46,7 @@ export default function page() {
 
   useEffect(() => {
     const fetchFundRequests = async () => {
-      const response = await api.get(`api/funds/budget-requests/${id}`);
+      const response = await api.get(`api/funds/budget-requests/user/project/${id}`);
       if (response.status === 200) {
         setBudgetRequests(response.data);
       }

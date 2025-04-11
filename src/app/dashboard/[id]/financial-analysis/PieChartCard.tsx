@@ -84,11 +84,11 @@ const PieChartCard: React.FC<FinancialCardProps> = ({
             <CardFooter className="justify-center gap-4 pt-0">
                 <div className="flex items-center">
                     <div className="w-4 h-4 bg-[#4ade80] mr-2 rounded-sm"></div>
-                    <span>Pengeluaran: Rp{data?.total_earnings?.toLocaleString() ?? '0'}</span>
+                    <span>Pemasukan: Rp{data?.total_earnings?.toLocaleString() ?? '0'}</span>
                 </div>
                 <div className="flex items-center">
                     <div className="w-4 h-4 bg-[#f87171] mr-2 rounded-sm"></div>
-                    <span>Pemasukan: Rp{data?.total_spendings?.toLocaleString() ?? '0'}</span>
+                    <span>Pengeluaran: Rp{data?.total_spendings?.toLocaleString() ?? '0'}</span>
                 </div>
             </CardFooter>
         </Card>

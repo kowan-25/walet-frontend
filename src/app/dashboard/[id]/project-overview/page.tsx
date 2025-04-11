@@ -7,6 +7,7 @@ import useUser from "@/hooks/useUser";
 import Button from "@/components/buttons/Button";
 import ConfirmationModal from "@/components/modals/ConfirmationModal";
 import Link from "next/link";
+import CategoryManager from "./CategoryManager";
 
 export default function ProjectDetailPage() {
   const { userId } = useUser();
@@ -134,6 +135,8 @@ export default function ProjectDetailPage() {
         onConfirm={handleConfirmDelete}
         onCancel={handleCancelDelete}
       />
+      
+      <CategoryManager isManager={isManager} />
     </div>
   );
 }
