@@ -205,7 +205,7 @@ const BudgetModal: React.FC<BudgetModalProps> = ({
                   )}
                   disabled={isLoading}
                 >
-                  Pengeluaran
+                  Kirim Dana ke Member
                 </button>
                 <button
                   type="button"
@@ -218,7 +218,7 @@ const BudgetModal: React.FC<BudgetModalProps> = ({
                   )}
                   disabled={isLoading}
                 >
-                  Take Fund
+                  Ambil Dana dari Member
                 </button>
               </div>
             </div>

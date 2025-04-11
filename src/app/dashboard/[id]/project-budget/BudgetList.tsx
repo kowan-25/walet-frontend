@@ -100,7 +100,7 @@ const BudgetList: React.FC<BudgetListProps> = ({ onEdit, refreshTrigger }) => {
 
   const handleDeleteClick = (e: React.MouseEvent, budget: BudgetDisplay) => {
     e.stopPropagation();
-    if (budget.is_editable) {
+    if (budget.is_editable && budget.amount <= totalBudget) {
       setSelectedBudget(budget);
       setIsDetailModalOpen(false);
       setIsDeleteModalOpen(true);
@@ -185,12 +185,12 @@ const BudgetList: React.FC<BudgetListProps> = ({ onEdit, refreshTrigger }) => {
         </div>
 
         {/* Card: Total Pengeluaran */}
-        <div className="bg-white rounded-xl shadow-md p-6 flex flex-col items-start border-t-4 border-red-500">
+        <div className="bg-white rounded-xl shadow-md p-6 flex flex-col items-start border-t-4 border-yellow-500">
           <div className="flex items-center gap-3 mb-2">
-            <span className="inline-block w-3 h-3 rounded-full bg-red-500"></span>
-            <h3 className="text-base font-semibold text-gray-900 tracking-wide">Total Pengeluaran</h3>
+            <span className="inline-block w-3 h-3 rounded-full bg-yellow-500"></span>
+            <h3 className="text-base font-semibold text-gray-900 tracking-wide">Total Alokasi</h3>
           </div>
-          <p className="text-3xl font-extrabold text-red-600">{formatCurrency(totalExpense)}</p>
+          <p className="text-3xl font-extrabold text-yellow-600">{formatCurrency(totalExpense)}</p>
           <span className="mt-1 text-xs text-gray-500">Akumulasi seluruh pengeluaran proyek</span>
         </div>
 
@@ -245,9 +245,9 @@ const BudgetList: React.FC<BudgetListProps> = ({ onEdit, refreshTrigger }) => {
                   onClick={() => handleRowClick(budget)}
                 >
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${budget.is_income ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+                    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${budget.is_income ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'
                       }`}>
-                      {budget.is_income ? 'Pemasukan' : 'Pengeluaran'}
+                      {budget.is_income ? 'Pemasukan' : 'Alokasi'}
                     </span>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
