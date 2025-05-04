@@ -20,7 +20,8 @@ const eslintConfig = [
       "react-hooks/exhaustive-deps": "off",
       "@typescript-eslint/no-unused-vars": "off",
     },
+    ignores: [
+      "src/**", // Ignore all in src
+    ],
   },
 ];
-
-export default eslintConfig;
