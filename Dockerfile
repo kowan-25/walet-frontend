@@ -1,4 +1,4 @@
-FROM registry.cs.ui.ac.id/pkpl/base/oven/bun:canary-alpine AS base
+FROM oven/bun:alpine AS base
 
 # Install dependencies only when needed
 FROM base AS deps
@@ -6,7 +6,7 @@ FROM base AS deps
 WORKDIR /app
 
 # Install dependencies
-COPY package.json bun.lockb ./
+COPY package.json package-lock.json ./
 RUN bun install --frozen-lockfile
 
 # Rebuild the source code only when needed
@@ -14,6 +14,10 @@ FROM base AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
+
+# Build argument for API URL (required for NEXT_PUBLIC_* vars at build time)
+ARG NEXT_PUBLIC_API_URL
+ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL
 
 # Next.js collects completely anonymous telemetry data about general usage.
 # Learn more here: https://nextjs.org/telemetry

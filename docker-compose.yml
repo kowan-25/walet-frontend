@@ -1,0 +1,24 @@
+services:
+  walet-frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - NEXT_PUBLIC_API_URL=http://52.2.37.1
+    container_name: walet-frontend
+    restart: unless-stopped
+    expose:
+      - "80"
+    environment:
+      - NODE_ENV=production
+
+  nginx:
+    image: nginx:alpine
+    container_name: walet-nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - walet-frontend
