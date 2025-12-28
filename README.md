@@ -1,6 +1,6 @@
 # Walet Frontend
 
-## 👥 Team Members
+## Team Members
 
 **Group Name:** Tanya Steven (TS)
 
@@ -65,72 +65,9 @@ The frontend communicates with a separate backend API server to handle data pers
 
 Before deploying this application, ensure you have the following installed on your server/machine:
 
-### 1. Docker
-
-Docker is required to build and run the containerized application.
-
-**Install Docker on Ubuntu/Debian:**
-
-```bash
-# Update package index
-sudo apt update
-
-# Install prerequisites
-sudo apt install -y apt-transport-https ca-certificates curl software-properties-common
-
-# Add Docker's official GPG key
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
-
-# Add Docker repository
-echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-
-# Install Docker
-sudo apt update
-sudo apt install -y docker-ce docker-ce-cli containerd.io
-
-# Start and enable Docker
-sudo systemctl start docker
-sudo systemctl enable docker
-
-# (Optional) Add your user to the docker group to run docker without sudo
-sudo usermod -aG docker $USER
-# Log out and log back in for this to take effect
-```
-
-**Verify Docker installation:**
-
-```bash
-docker --version
-# Expected output: Docker version 24.x.x or higher
-```
-
-### 2. Docker Compose
-
-Docker Compose is used to orchestrate multiple containers (frontend + nginx).
-
-**Docker Compose v2 is typically included with Docker Desktop.** For Linux servers:
-
-```bash
-# Docker Compose is included as a Docker plugin in recent versions
-# Verify with:
-docker compose version
-
-# If not installed, install the plugin:
-sudo apt install -y docker-compose-plugin
-```
-
-**Verify Docker Compose installation:**
-
-```bash
-docker compose version
-# Expected output: Docker Compose version v2.x.x
-```
-
-### 3. Git (for cloning the repository)
-
-```bash
-sudo apt install -y git
-```
+- **Docker** (v24.x or higher)
+- **Docker Compose** (v2.x or higher)
+- **Git** (for cloning the repository)
 
 ---
 
