@@ -1,5 +1,19 @@
 # Walet Frontend
 
+## 👥 Team Members
+
+**Group Name:** Tanya Steven (TS)
+
+| Name | NPM |
+|------|-----|
+| Naufal Ichsan | 2206082013 |
+| Winoto Hasyim | 2206025243 |
+| Steven Faustin Orginata | 2206030855 |
+| Matthew Hotmaraja Johan Turnip | 2206081231 |
+| Emir Mohamad Fathan | 2206081982 |
+
+---
+
 A modern web application frontend for Walet - a wallet/finance management system. This project was developed as part of a **Cloud Computing course** final project, demonstrating containerized deployment with Docker and reverse proxy configuration with Nginx.
 
 ## 📋 Table of Contents
